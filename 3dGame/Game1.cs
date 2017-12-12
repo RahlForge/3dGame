@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using _3dGame.Models;
 
 namespace _3dGame
 {
@@ -11,6 +12,9 @@ namespace _3dGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        ModelManager modelManager;
+
+        public Camera Camera { get; protected set; }
 
         public Game1()
         {
@@ -27,6 +31,12 @@ namespace _3dGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Camera = new Camera(this, new Vector3(0, 0, 50),
+                Vector3.Zero, Vector3.Up);
+            Components.Add(Camera);
+
+            modelManager = new ModelManager(this);
+            Components.Add(modelManager);
 
             base.Initialize();
         }
