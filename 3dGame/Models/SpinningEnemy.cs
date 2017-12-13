@@ -11,55 +11,39 @@ namespace _3dGame.Models
     class SpinningEnemy : BasicModel
     {
         Matrix rotation;
-        float speed;
+        Matrix translation;
+        Matrix currentOrientation;
+        Matrix newOrientation;
+        Vector3 Direction = new Vector3(0, 0, -1);
+        
 
         public SpinningEnemy(Model model) 
             : base(model)
         {
-            speed = -1f;
             world = Matrix.CreateFromYawPitchRoll(MathHelper.Pi, MathHelper.Pi * -0.5f, 0f);
             rotation = Matrix.Identity;
+            translation = Matrix.Identity;
+            currentOrientation = rotation;
+            newOrientation = currentOrientation * Matrix.CreateRotationZ(MathHelper.Pi);
         }
 
         public override void Update()
-        {
-            world *= Matrix.CreateTranslation(new Vector3(
-                0f, 0f, speed));
-            
-            if (world.Translation.Z <= -400)
+        {           
+            if (translation.Translation.Z < -400 ||
+                translation.Translation.Z > 0)
             {
-                if (rotation.Rotation.Z < MathHelper.Pi / 270)
-                {
-                    speed = 0f;
-                    rotation *= Matrix.CreateRotationZ(MathHelper.Pi / 180);
-                }
-                else
-                {
-                    speed = 1f;
-                }
+                Direction.Z *= -1;
+                rotation *= Matrix.CreateRotationZ(MathHelper.Pi);
             }
-            else if (world.Translation.Z >= 0)
-            {
-                if (World.Rotation.Y != MathHelper.Pi)
-                {
-                    speed = 0f;
-                    rotation *= Matrix.CreateRotationY(MathHelper.Pi / 180);
-                }
-                else
-                    speed = -1f;               
-            }
+
+            translation *= Matrix.CreateTranslation(Direction);
 
             base.Update();
         }
 
         public override Matrix World
         {
-            get { return rotation * world; }
-        }
-
-        private void Spin()
-        {
-
+            get { return rotation * translation * world; }
         }
     }
 }
