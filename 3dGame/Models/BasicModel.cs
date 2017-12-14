@@ -11,7 +11,7 @@ namespace _3dGame.Models
         public BasicModel(Model model)
         {
             Model = model;
-            world = Matrix.Identity;
+            world = Matrix.CreateFromYawPitchRoll(MathHelper.Pi, MathHelper.Pi * -0.5f, 0f);
         }
 
         public virtual void Update()

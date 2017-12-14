@@ -10,40 +10,24 @@ namespace _3dGame.Models
 {
     class SpinningEnemy : BasicModel
     {
-        Matrix rotation;
-        Matrix translation;
-        Matrix currentOrientation;
-        Matrix newOrientation;
-        Vector3 Direction = new Vector3(0, 0, -1);
-        
+        Matrix rotation;        
 
         public SpinningEnemy(Model model) 
             : base(model)
         {
-            world = Matrix.CreateFromYawPitchRoll(MathHelper.Pi, MathHelper.Pi * -0.5f, 0f);
             rotation = Matrix.Identity;
-            translation = Matrix.Identity;
-            currentOrientation = rotation;
-            newOrientation = currentOrientation * Matrix.CreateRotationZ(MathHelper.Pi);
         }
 
         public override void Update()
         {           
-            if (translation.Translation.Z < -400 ||
-                translation.Translation.Z > 0)
-            {
-                Direction.Z *= -1;
-                rotation *= Matrix.CreateRotationZ(MathHelper.Pi);
-            }
-
-            translation *= Matrix.CreateTranslation(Direction);
+            rotation *= Matrix.CreateRotationZ(MathHelper.Pi / 180);
 
             base.Update();
         }
 
         public override Matrix World
         {
-            get { return rotation * translation * world; }
+            get { return rotation * world; }
         }
     }
 }

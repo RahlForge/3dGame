@@ -20,7 +20,7 @@ namespace _3dGame.Models
 
         protected override void LoadContent()
         {
-            models.Add(new SpinningEnemy(Game.Content.Load<Model>(@"Models/starwars-tie-fighter")));
+            models.Add(new BasicModel(Game.Content.Load<Model>(@"Models/starwars-tie-fighter")));
 
             base.LoadContent();
         }

@@ -41,9 +41,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="FlyingCamera.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Models\BasicModel.cs" />
+    <Compile Include="Models\FlyingShip.cs" />
     <Compile Include="Models\ModelManager.cs" />
     <Compile Include="Models\SpinningEnemy.cs" />
     <Compile Include="Program.cs" />
