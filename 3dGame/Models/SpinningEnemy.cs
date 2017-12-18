@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -10,17 +7,28 @@ namespace _3dGame.Models
 {
     class SpinningEnemy : BasicModel
     {
-        Matrix rotation;        
+        Matrix rotation;
+        float yawAngle;
+        float pitchAngle;
+        float rollAngle;
+        Vector3 direction;
 
-        public SpinningEnemy(Model model) 
+        public SpinningEnemy(Model model, Vector3 position, Vector3 direction,
+            float yawAngle, float pitchAngle, float rollAngle) 
             : base(model)
         {
-            rotation = Matrix.Identity;
+            world = Matrix.CreateTranslation(position);
+            this.yawAngle = yawAngle;
+            this.pitchAngle = pitchAngle;
+            this.rollAngle = rollAngle;
+            this.direction = direction;
         }
 
         public override void Update()
         {           
-            rotation *= Matrix.CreateRotationZ(MathHelper.Pi / 180);
+            rotation *= Matrix.CreateFromYawPitchRoll(yawAngle, pitchAngle, rollAngle);
+
+            world *= Matrix.CreateTranslation(direction);
 
             base.Update();
         }

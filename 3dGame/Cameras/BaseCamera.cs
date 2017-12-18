@@ -2,15 +2,13 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace _3dGame
+namespace _3dGame.Cameras
 {
-    public class Camera : GameComponent
+    public class BaseCamera : GameComponent
     {
-        Vector3 cameraDirection;
-        Vector3 cameraUp;
-        MouseState prevMouseState;
-        float currentYaw;
-        float currentPitch;
+        protected Vector3 cameraDirection;
+        protected Vector3 cameraUp;
+        protected MouseState prevMouseState;
         public Vector3 CameraPosition { get; protected set; }
         public Matrix View { get; protected set; }
         public Matrix Projection { get; protected set; }
@@ -18,7 +16,7 @@ namespace _3dGame
         const float totalYaw = MathHelper.PiOver4 / 2;
         const float totalPitch = MathHelper.PiOver4 / 2;
 
-        public Camera(Game game, Vector3 pos, Vector3 target, Vector3 up) 
+        public BaseCamera(Game game, Vector3 pos, Vector3 target, Vector3 up) 
             : base(game)
         {
             CameraPosition = pos;
@@ -46,26 +44,6 @@ namespace _3dGame
 
         public override void Update(GameTime gameTime)
         {
-            // Yaw            
-            float yawAngle = (-MathHelper.PiOver4 / 150) * (Mouse.GetState().X - prevMouseState.X);
-
-            if (Math.Abs(currentYaw + yawAngle) < totalYaw)
-            {
-                cameraDirection = Vector3.Transform(cameraDirection, Matrix.CreateFromAxisAngle(
-                    cameraUp, yawAngle));
-                currentYaw += yawAngle;
-            }
-
-            // Pitch
-            float pitchAngle = (-MathHelper.PiOver4 / 150) * (Mouse.GetState().Y - prevMouseState.Y);
-
-            if (Math.Abs(currentPitch + pitchAngle) < totalPitch)
-            {
-                cameraDirection = Vector3.Transform(cameraDirection, Matrix.CreateFromAxisAngle(
-                    Vector3.Cross(cameraUp, cameraDirection), pitchAngle));
-                currentPitch += pitchAngle;
-            }
-
             // Reset mouse state
             Mouse.SetPosition(Game.Window.ClientBounds.Width / 2,
                 Game.Window.ClientBounds.Height / 2);

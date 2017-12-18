@@ -1,7 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3dGame.Models;
+using _3dGame.Cameras;
 
 namespace _3dGame
 {
@@ -14,12 +16,21 @@ namespace _3dGame
         SpriteBatch spriteBatch;
         ModelManager modelManager;
 
-        public Camera Camera { get; protected set; }
+        public TurretCamera Camera { get; protected set; }
+        public Random rnd { get; protected set; }
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            rnd = new Random(DateTime.Now.Millisecond);
+
+            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            
+            #if !DEBUG
+                graphics.IsFullScreen = true;
+            #endif
         }
 
         /// <summary>
@@ -31,8 +42,7 @@ namespace _3dGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Camera = new Camera(this, new Vector3(0, 0, 50),
-                Vector3.Zero, Vector3.Up);
+            Camera = new TurretCamera(this, new Vector3(0, 0, 50), Vector3.Zero, Vector3.Up);
             Components.Add(Camera);
 
             modelManager = new ModelManager(this);
@@ -54,7 +64,7 @@ namespace _3dGame
             rs.CullMode = CullMode.None;
             GraphicsDevice.RasterizerState = rs;
 
-            // TODO: use this.Content to load your game content here
+            // TODO: use this.Content to load your game content here         
         }
 
         /// <summary>
@@ -87,7 +97,7 @@ namespace _3dGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
 

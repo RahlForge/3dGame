@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3dGame.Cameras;
 
 namespace _3dGame.Models
 {
@@ -11,7 +12,7 @@ namespace _3dGame.Models
         public BasicModel(Model model)
         {
             Model = model;
-            world = Matrix.CreateFromYawPitchRoll(MathHelper.Pi, MathHelper.Pi * -0.5f, 0f);
+            world = Matrix.CreateFromYawPitchRoll(0f, MathHelper.Pi * -0.5f, 0f);
         }
 
         public virtual void Update()
@@ -20,7 +21,7 @@ namespace _3dGame.Models
             //    Matrix.CreateTranslation(new Vector3(0f, 0f, -50f));
         }
 
-        public void Draw(Camera camera)
+        public void Draw(BaseCamera camera)
         {
             Matrix[] transforms = new Matrix[Model.Bones.Count];
             Model.CopyAbsoluteBoneTransformsTo(transforms);
